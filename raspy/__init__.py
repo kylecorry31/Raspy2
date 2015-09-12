@@ -24,7 +24,7 @@ class PIR(DigitalInput):
 
 
 class AnalogInput(object):
-    def __int__(self, pin, capacitance=1e-6):
+    def __init__(self, pin, capacitance=1e-6):
         self.pin = pin
         self.capacitance = capacitance
 
