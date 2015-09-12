@@ -38,7 +38,7 @@ class AnalogInput(object):
         while GPIO.input(self.pin) == GPIO.LOW:
             pass
         total_time = time.time() - start_time
-        return (total_time / 1000.0) / 1.0e-6
+        return ((total_time / 1000.0) / 1.0e-6) * 21
 
 
 class Output(object):
