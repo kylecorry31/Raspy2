@@ -30,6 +30,9 @@ class Output(object):
 
 
 class LED(Output):
+    def __init__(self):
+        self.pwm = None
+
     def set_brightness(self, brightness):
         """Sets the brightness of the LED. Brightness ranges from 0 (off) to 100 (fully on)."""
         self.pwm = GPIO.PWM(self.pin, 50)
