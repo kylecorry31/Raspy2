@@ -30,7 +30,8 @@ class Output(object):
 
 
 class LED(Output):
-    def __init__(self):
+    def __init__(self, pin):
+        super(LED, self).__init__(pin)
         self.pwm = None
 
     def set_brightness(self, brightness):
