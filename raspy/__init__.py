@@ -31,11 +31,11 @@ class AnalogInput(object):
     def get_resistance(self):
         GPIO.setmode(GPIO.BOARD)
         start_time = time.time()
-        GPIO.setup(self.port, GPIO.OUT)
-        GPIO.output(self.port, GPIO.LOW)
+        GPIO.setup(self.pin, GPIO.OUT)
+        GPIO.output(self.pin, GPIO.LOW)
         time.sleep(0.1)
-        GPIO.setup(self.port, GPIO.IN)
-        while GPIO.input(self.port) == GPIO.LOW:
+        GPIO.setup(self.pin, GPIO.IN)
+        while GPIO.input(self.pin) == GPIO.LOW:
             pass
         total_time = time.time() - start_time
         return (total_time / 1000.0) / 1.0e-6
