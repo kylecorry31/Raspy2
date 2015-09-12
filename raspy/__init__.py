@@ -57,6 +57,28 @@ class Output(object):
         GPIO.output(self.pin, GPIO.LOW)
 
 
+class Ultrasonic(object):
+    def __init__(self, triggerPin, echoPin):
+        self.triggerPin = triggerPin
+        self.echoPin = echoPin
+        GPIO.setup(self.triggerPin, GPIO.OUT)
+        GPIO.setup(self.echoPin, GPIO.IN)
+        time.sleep(0.1)
+
+    def get_distance(self):
+        """Gets the current distance in CM"""
+        GPIO.output(self.triggerPin, GPIO.HIGH)
+        time.sleep(0.00001)
+        GPIO.output(self.triggerPin, GPIO.LOW)
+        while GPIO.input(self.echoPin) == 0:
+            pass
+        start = time.time()
+        while GPIO.input(self.echoPin) == 1:
+            pass
+        stop = time.time()
+        return (stop - start) * 17000
+
+
 class LED(Output):
     def __init__(self, pin):
         super(LED, self).__init__(pin)
