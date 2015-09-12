@@ -1,6 +1,5 @@
 import RPi.GPIO as GPIO
 import time
-import math
 
 GPIO.setmode(GPIO.BOARD)
 
@@ -27,36 +26,6 @@ class PIR(DigitalInput):
         return bool(self.get())
 
 
-class AnalogInput(object):
-    def __init__(self, pin, capacitance=1e-6):
-        self.pin = pin
-        self.capacitance = capacitance
-
-    def get_resistance(self):
-        GPIO.setmode(GPIO.BOARD)
-        start_time = time.time()
-        GPIO.setup(self.pin, GPIO.OUT)
-        GPIO.output(self.pin, GPIO.LOW)
-        time.sleep(0.1)
-        GPIO.setup(self.pin, GPIO.IN)
-        while GPIO.input(self.pin) == GPIO.LOW:
-            pass
-        total_time = time.time() - start_time
-        return math.round(((total_time / 1000.0) / self.capacitance - 100.208) / 0.0004906)
-
-
-class Output(object):
-    def __init__(self, pin):
-        self.pin = pin
-        GPIO.setup(self.pin, GPIO.OUT)
-
-    def turn_on(self):
-        GPIO.output(self.pin, GPIO.HIGH)
-
-    def turn_off(self):
-        GPIO.output(self.pin, GPIO.LOW)
-
-
 class Ultrasonic(object):
     def __init__(self, triggerPin, echoPin):
         self.triggerPin = triggerPin
@@ -70,31 +39,55 @@ class Ultrasonic(object):
         GPIO.output(self.triggerPin, GPIO.HIGH)
         time.sleep(0.00001)
         GPIO.output(self.triggerPin, GPIO.LOW)
-        while GPIO.input(self.echoPin) == 0:
+        while GPIO.input(self.echoPin) == GPIO.LOW:
             pass
         start = time.time()
-        while GPIO.input(self.echoPin) == 1:
+        while GPIO.input(self.echoPin) == GPIO.HIGH:
             pass
         stop = time.time()
         return (stop - start) * 17000
 
 
-class LED(Output):
-    def __init__(self, pin):
-        super(LED, self).__init__(pin)
-        self.pwm = None
+class AnalogInput(object):
+    def __init__(self, pin, capacitance=1e-6):
+        self.pin = pin
+        self.capacitance = capacitance
 
+    def get_resistance(self):
+        """Gets the current resistance in ohms"""
+        GPIO.setmode(GPIO.BOARD)
+        start_time = time.time()
+        GPIO.setup(self.pin, GPIO.OUT)
+        GPIO.output(self.pin, GPIO.LOW)
+        time.sleep(0.1)
+        GPIO.setup(self.pin, GPIO.IN)
+        while GPIO.input(self.pin) == GPIO.LOW:
+            pass
+        total_time = time.time() - start_time
+        return round(total_time / self.capacitance)
+
+
+class Output(object):
+    def __init__(self, pin):
+        self.pin = pin
+        self.pwm = None
+        GPIO.setup(self.pin, GPIO.OUT)
+
+    def turn_on(self):
+        """Turns on the output device"""
+        if self.pwm:
+            self.pwm.stop()
+        GPIO.output(self.pin, GPIO.HIGH)
+
+    def turn_off(self):
+        """Turns off the output device"""
+        if self.pwm:
+            self.pwm.stop()
+        GPIO.output(self.pin, GPIO.LOW)
+
+
+class LED(Output):
     def set_brightness(self, brightness):
         """Sets the brightness of the LED. Brightness ranges from 0 (off) to 100 (fully on)."""
         self.pwm = GPIO.PWM(self.pin, 50)
         self.pwm.start(brightness)
-
-    def turn_on(self):
-        if self.pwm:
-            self.pwm.stop()
-        super(LED, self).turn_on()
-
-    def turn_off(self):
-        if self.pwm:
-            self.pwm.stop()
-        super(LED, self).turn_off()
