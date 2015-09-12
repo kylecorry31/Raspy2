@@ -1,4 +1,3 @@
-__author__ = 'kyle'
 import RPi.GPIO as GPIO
 import time
 import math
@@ -7,20 +6,24 @@ GPIO.setmode(GPIO.BOARD)
 
 
 def finish():
+    """Use this at the end of every program to reset the GPIO pins of the Pi."""
     GPIO.cleanup()
 
 
 class DigitalInput(object):
     def __init__(self, pin):
+        """A digital input on the Pi."""
         self.pin = pin
         GPIO.setup(self.pin, GPIO.IN)
 
     def get(self):
+        """Get the current value of the digital input pin."""
         return GPIO.input(self.pin)
 
 
 class PIR(DigitalInput):
     def detect_motion(self):
+        """Detects motion using the PIR sensors."""
         return bool(self.get())
 
 
@@ -39,7 +42,7 @@ class AnalogInput(object):
         while GPIO.input(self.pin) == GPIO.LOW:
             pass
         total_time = time.time() - start_time
-        return math.round(((total_time / 1000.0) / self.capacitance - 100.208)/0.0004906)
+        return math.round(((total_time / 1000.0) / self.capacitance - 100.208) / 0.0004906)
 
 
 class Output(object):
