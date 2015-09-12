@@ -4,6 +4,10 @@ import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BOARD)
 
 
+def finish():
+    GPIO.cleanup()
+
+
 class Sensor(object):
     def __init__(self, pin):
         self.pin = pin
@@ -11,9 +15,6 @@ class Sensor(object):
 
     def get(self):
         return GPIO.input(self.pin)
-
-    def __del__(self):
-        GPIO.cleanup()
 
 
 class Output(object):
@@ -26,9 +27,6 @@ class Output(object):
 
     def turn_off(self):
         GPIO.output(self.pin, GPIO.LOW)
-
-    def __del__(self):
-        GPIO.cleanup()
 
 
 class LED(Output):
