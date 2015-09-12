@@ -1,6 +1,7 @@
 __author__ = 'kyle'
 import RPi.GPIO as GPIO
 import time
+import math
 
 GPIO.setmode(GPIO.BOARD)
 
@@ -38,7 +39,7 @@ class AnalogInput(object):
         while GPIO.input(self.pin) == GPIO.LOW:
             pass
         total_time = time.time() - start_time
-        return ((total_time / 1000.0) / 1.0e-6 - 100.208)/0.0004906
+        return math.round(((total_time / 1000.0) / 1.0e-6 - 100.208)/0.0004906)
 
 
 class Output(object):
