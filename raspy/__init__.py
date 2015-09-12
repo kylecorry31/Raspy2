@@ -1,5 +1,6 @@
 __author__ = 'kyle'
 import RPi.GPIO as GPIO
+import time
 
 GPIO.setmode(GPIO.BOARD)
 
@@ -8,7 +9,7 @@ def finish():
     GPIO.cleanup()
 
 
-class Sensor(object):
+class DigitalInput(object):
     def __init__(self, pin):
         self.pin = pin
         GPIO.setup(self.pin, GPIO.IN)
@@ -17,9 +18,27 @@ class Sensor(object):
         return GPIO.input(self.pin)
 
 
-class PIR(Sensor):
+class PIR(DigitalInput):
     def detect_motion(self):
         return bool(self.get())
+
+
+class AnalogInput(object):
+    def __int__(self, pin, capacitance=1e-6):
+        self.pin = pin
+        self.capacitance = capacitance
+
+    def get_resistance(self):
+        GPIO.setmode(GPIO.BOARD)
+        start_time = time.time()
+        GPIO.setup(self.port, GPIO.OUT)
+        GPIO.output(self.port, GPIO.LOW)
+        time.sleep(0.1)
+        GPIO.setup(self.port, GPIO.IN)
+        while GPIO.input(self.port) == GPIO.LOW:
+            pass
+        total_time = time.time() - start_time
+        return (total_time / 1000.0) / 1.0e-6
 
 
 class Output(object):
