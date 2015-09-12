@@ -17,6 +17,11 @@ class Sensor(object):
         return GPIO.input(self.pin)
 
 
+class PIR(Sensor):
+    def detect_motion(self):
+        return bool(self.get())
+
+
 class Output(object):
     def __init__(self, pin):
         self.pin = pin
