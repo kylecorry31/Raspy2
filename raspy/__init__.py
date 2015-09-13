@@ -10,6 +10,8 @@ def finish():
 
 
 class DigitalInput(object):
+    """A digital sensor for the Raspberry Pi."""
+
     def __init__(self, pin):
         """A digital input on the Pi."""
         self.pin = pin
@@ -21,12 +23,16 @@ class DigitalInput(object):
 
 
 class PIR(DigitalInput):
+    """A passive infrared sensor for the Raspberry Pi. Used to detect motion."""
+
     def detect_motion(self):
         """Detects motion using the PIR sensors."""
         return bool(self.get())
 
 
 class Ultrasonic(object):
+    """An ultrasonic sensor for the Raspberry Pi. Used to detect distance."""
+
     def __init__(self, triggerPin, echoPin):
         self.triggerPin = triggerPin
         self.echoPin = echoPin
@@ -49,6 +55,8 @@ class Ultrasonic(object):
 
 
 class AnalogInput(object):
+    """An analog sensor for the Raspberry Pi."""
+
     def __init__(self, pin, capacitance=1e-6):
         self.pin = pin
         self.capacitance = capacitance
@@ -68,6 +76,8 @@ class AnalogInput(object):
 
 
 class Output(object):
+    """An output device for the Raspberry Pi."""
+
     def __init__(self, pin):
         self.pin = pin
         self.pwm = None
@@ -87,6 +97,8 @@ class Output(object):
 
 
 class LED(Output):
+    """A light emitting diode for the Raspberry Pi."""
+
     def set_brightness(self, brightness):
         """Sets the brightness of the LED. Brightness ranges from 0 (off) to 100 (fully on)."""
         self.pwm = GPIO.PWM(self.pin, 50)
