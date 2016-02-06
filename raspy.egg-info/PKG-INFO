@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: raspy
+Version: 0.5
+Summary: Python library to interact with sensors and actuators using a Raspberry Pi.
+Home-page: http://github.com/kylecorry31/Raspy2
+Author: Kyle Corry
+Author-email: kylecorry31@gmail.com
+License: UNKNOWN
+Description: UNKNOWN
+Platform: UNKNOWN

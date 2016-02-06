@@ -1,0 +1,6 @@
+setup.py
+raspy.egg-info/PKG-INFO
+raspy.egg-info/SOURCES.txt
+raspy.egg-info/dependency_links.txt
+raspy.egg-info/requires.txt
+raspy.egg-info/top_level.txt

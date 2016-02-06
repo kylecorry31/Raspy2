@@ -38,13 +38,14 @@ class Ultrasonic(object):
         self.echoPin = echoPin
         GPIO.setup(self.triggerPin, GPIO.OUT)
         GPIO.setup(self.echoPin, GPIO.IN)
+        self.pwm = GPIO.pwm(self.triggerPin, 40)
         time.sleep(0.1)
 
     def get_distance(self):
         """Gets the current distance in CM"""
-        GPIO.output(self.triggerPin, GPIO.HIGH)
-        time.sleep(0.00001)
-        GPIO.output(self.triggerPin, GPIO.LOW)
+        self.pwm.start(12)
+        time.sleep(0.0001)
+        self.pwm.stop()
         while GPIO.input(self.echoPin) == GPIO.LOW:
             pass
         start = time.time()
